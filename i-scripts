@@ -1,0 +1,22 @@
+#!/bin/bash
+
+description=$'Scripts - Present the available scripts in usr/local/bin, from the pattern i-[script name].'
+
+usage()
+{
+    echo "$description"
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done
+
+echo 'List of i-scripts:'
+find -f /usr/local/bin/i-* -type f -exec {} '-h' \;
