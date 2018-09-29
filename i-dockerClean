@@ -1,0 +1,21 @@
+#!/bin/bash
+
+description=$'Docker clean - Clean the exited docker containers.'
+
+usage()
+{
+    echo "$description"
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done
+
+docker rm $(docker ps -qa --no-trunc --filter "status=exited")

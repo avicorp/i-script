@@ -1,0 +1,29 @@
+#!/bin/bash
+
+description=$'Add Script - Grant execution permission to the file (only for the user) and copy to usr/local/bin.'
+
+addScript()
+{
+    echo 'Script:' $1 'was added'
+    chmod u+x $1
+    cp -i $1 /usr/local/bin
+}
+
+usage()
+{
+    echo "$description"
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -f | --file )           shift
+                                addScript $1
+                                exit
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit 1
+    esac
+    shift
+done

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+chmod u+x ./i-addScript
+
+find . -type f -maxdepth 1 -name "i-*" -exec ./i-addScript {} \;
