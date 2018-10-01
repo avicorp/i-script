@@ -1,6 +1,6 @@
 #!/bin/bash
 
-description=$'Docker clean - Clean the exited docker containers.'
+description=$'i-dockerClean - Clean the exited docker containers.'
 
 usage()
 {

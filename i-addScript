@@ -1,6 +1,6 @@
 #!/bin/bash
 
-description=$'Add Script - Grant execution permission to the file (only for the user) and copy to usr/local/bin.'
+description=$'i-addScript - Grant execution permission to the file (only for the user) and copy to usr/local/bin.'
 
 addScript()
 {
@@ -19,6 +19,7 @@ while [ "$1" != "" ]; do
         -f | --file )           shift
                                 addScript $1
                                 exit
+                                ;;
         -h | --help )           usage
                                 exit
                                 ;;

@@ -1,0 +1,128 @@
+#!/bin/bash
+
+description=$'i-newScript - read script from the user, build new script file and set it.'
+param1=$'                 [-d | --description description]  - set the new script description (the result of -h paramter).'
+param2=$'                 [-name file-name]                 - set the new script name'
+
+prefix=$'i-'
+newScriptDescription=$''
+newScriptName=$''
+newScript=$''
+
+setScriptName()
+{
+    if [[ ${newScriptName:0:2} != $prefix ]]
+    then 
+        newScriptName=$prefix$newScriptName
+    fi
+}
+
+writhBaseScript()
+{
+    var1=$'$description'
+    var2=$'$1'
+    read -r -d '' newScript <<EOF
+    #!/bin/bash
+
+description=$'$newScriptName - $newScriptDescription'
+    
+usage()
+{
+    echo "$var1"
+}
+
+case $var2 in
+    -h | --help)    usage
+                    exit
+esac
+EOF
+    echo "$newScript">$newScriptName
+    echo ''>>$newScriptName
+}
+
+scriptEditor()
+{
+    echo '-- Write the script you want to set (close the editor by '\''-'\''):'
+    choice="n"
+    numberoflines=1
+    line=1
+    while [ "$choice" = "n" ]; do
+        read -r -p "$line: " script
+        if [ "$script" = "-" ]
+        then
+            read -p '-- Close the script editor? [y/n [y]]: ' choice
+            
+            if [ "$choice" = "n" ]
+            then
+                read -p '-- Select line for edit? [line number [new line]]: ' fixLine
+                if [ $fixLine -lt $line ]
+                then 
+                    line=$fixLine
+                else
+                    line=$numberoflines
+                fi 
+                echo '-- Fix the script (close the editor by '\''-'\''):'
+            fi
+        else
+            scriptLines[$line-1]=$script
+            if [ $numberoflines -eq $line ]
+            then
+                let "numberoflines += 1"
+            fi
+            let "line += 1"
+        fi
+    done
+}
+
+writhMainScript()
+{
+    for line in "${scriptLines[@]}"
+    do
+        echo $line>>$newScriptName
+    done
+}
+
+clossing()
+{
+    echo ''
+    echo '-- This is the new Script:'
+    echo ''
+    cat $newScriptName
+    echo ''
+    read -p '-- Set the script? [y/n [y]]: ' choice
+}
+
+usage()
+{
+    echo "$description"
+    echo "$param1"
+    echo "$param2"
+}
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -d | --description )    shift
+                                newScriptDescription=$1
+                                ;;
+        -name )                 shift
+                                newScriptName=$1
+                                setScriptName
+                                ;;
+        -h | --help )           usage
+                                exit
+                                ;;
+        * )                     usage
+                                exit
+    esac
+    shift
+done
+
+writhBaseScript
+scriptEditor
+writhMainScript
+clossing
+
+if [ "$choice" != "n" ]
+then
+    ./i-addScript -f './'$newScriptName
+fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-description=$'Docker clean images - Clean the old and unused docker images.'
+description=$'i-dockerCleanImages - Clean the old and unused docker images.'
 
 usage()
 {

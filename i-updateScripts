@@ -1,8 +1,8 @@
 #!/bin/bash
 
-description=$'Update scripts - Copy files from the pattern i-[script name] to: /usr/local/bin from the current directory.'
+description=$'i-updateScripts - Copy files from the pattern i-[script name] to: /usr/local/bin from the current directory.'
 param1=$'                 [-g]           - Run git pull.'
-param2=$'                 [-f file name] - Copy specific file to: /usr/local/bin.'
+param2=$'                 [-f file-name] - Copy specific file to: /usr/local/bin.'
 
 
 updateFile()
@@ -37,10 +37,10 @@ done
 
 
 echo 'This are the scripts that going to be global:'
-find . -type f -maxdepth 1 ! -name "*.*" -exec echo {} \;
+find . -type f -maxdepth 1 -name "i-*" ! -name "*.*" -exec echo {} \;
 read -p 'Set the scripts? [y/n [n]]: ' choice
 
 if [[ $choice = "y" ]]
 then
-    find . -type f -maxdepth 1 ! -name "*.*" -exec cp -r -i {} /usr/local/bin \;
+    find . -type f -maxdepth 1 -name "i-*" ! -name "*.*" -exec cp -r -i {} /usr/local/bin \;
 fi
